@@ -1,26 +1,44 @@
-import './style.css'
+function displayNumberOccurrences(numbers: number[]): void {
+  const occurrencesObj: {[key: number]: number} = getOccurrencesObject(numbers);
+  const outputRes: string[] = getOutputResult(occurrencesObj);
+  displayResult(outputRes);
 
-type Person = {id: number, name: string, city: string, age: number};
-//any - not recommended 
-let a: any;
-a = 10;
-a = "kuku";
-a = undefined;
-a.a = 10;
-a = {};
-//unknown - safed any
-
-function display(obj: unknown) {
-  typeof obj === "number" && obj++;
-  console.log(obj);
-  let sub: string;
-  typeof obj === "string" &&(sub = obj.substring(1, 2));
 }
-//index signature 
-let obj: {[key: number]:string} = {};
-obj[1] = "10";
-obj[2.6] = "w";
+function getOccurrencesObject(numbers: number[]): {[key: number]: number} {
+  const res: {[key: number]: number} = {};
+  return numbers.reduce((acc, cur) => ({...acc, [cur]: acc[cur] ? acc[cur] + 1 : 1}), res);
+}
 
-//arrays
-let ar: number[] = [1, 2, 3];
-//ar.push(...[1, 2, "k"]); error
+function getOutputResult(occurrencesObj: { [key: number]: number; }): string[] {
+  const entriesArr:[string, number][] = Object.entries(occurrencesObj).sort((e1, e2) =>
+     e1[1] == e2[1] ? +e1[0] - +e2[0] : e2[1] - e1[1])
+  return entriesArr.map(e => `${e[0]} => ${e[1]}`)
+}
+function displayResult(outputRes: string[]) {
+  outputRes.forEach(r => console.log(r))
+}
+displayNumberOccurrences([20, 3, 3, 20, 20, 1, 1])
+function isAnagram(word: string, anagram: string): boolean {
+  let res: boolean = false;
+  if (word.length === anagram.length && word !== anagram) {
+    const countersObj: {[key: string]: number} = getCountersObj(word);
+    res = anagramCheck(countersObj, anagram);
+  }
+  return res;
+}
+function getCountersObj(word: string): {[key: string]: number} {
+  const res: {[key: string]: number} = {};
+  return Array.from(word).reduce((acc, cur) => ({...acc, [cur]: acc[cur] ? acc[cur] + 1 : 1}), res);
+}
+function anagramCheck(countersObj: { [key: string]: number }, anagram: string): boolean {
+  return Array.from(anagram).every(c => --countersObj[c] >= 0)
+}
+const wordAnagram: [string, string, boolean][] = [
+  ['hello', 'olleh', true],
+  ['hello', 'oleh', false],
+  ['hello', 'helll', false],
+  ['ellectricity', 'ityrictelcel', true],
+  ['ellectricity', 'ityrictelcal', false],
+]
+const anagramRes = wordAnagram.map(e => `word: ${e[0]}; anagram: ${e[1]}; expected: ${e[2]}; actual: ${isAnagram(e[0], e[1])}`)
+displayResult(anagramRes);
