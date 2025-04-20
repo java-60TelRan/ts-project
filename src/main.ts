@@ -1,9 +1,28 @@
-enum DayOfWeek {
-  Sunday, Monday, Tuesday="Tue", Wednesday=0, Thursday, Friday, Saturday,
-   Sun = 0, Mon, Tue, Wed, Thu, Fri, Sat
+//union
+function kgToGr(kg: number|string) {
+    //Narrowing type
+    if (typeof kg === 'string') {
+      
+        kg = parseFloat(kg);
+    }
+    
+    return kg * 1000;
 }
-let dayOfWeek1 = DayOfWeek.Sunday;
-let dayOfWeek2 = DayOfWeek.Sun
-if (dayOfWeek1 === dayOfWeek2) {
-  console.log("The same day of the week");
-}
+//literals types
+let a:50 | 75| 100 | "abc" ; // a can have only 50, 75 , 100 or "abc" as value
+
+//intersection types
+type A = {a: string};
+type B = {b: number};
+type C = A & B; // C has both properties a and b
+let obj: C = {a: "hello", b: 42}; // valid
+  type D = string & number; // D is never, as string and number are incompatible types
+
+  type Product = {
+    id: number; 
+    name: string;
+    price: number;
+  }
+  let productKey: keyof Product; // productKey can be "id", "name", or "price"
+  productKey = "id"; // valid
+  //productKey = "kuku";  Error: Type '"kuku"' is not assignable to type '"id" | "name" | "price"'.
