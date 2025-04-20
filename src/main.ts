@@ -10,8 +10,9 @@ function getOccurrencesObject(numbers: number[]): {[key: number]: number} {
 }
 
 function getOutputResult(occurrencesObj: { [key: number]: number; }): string[] {
-  const entriesArr:[string, number][] = Object.entries(occurrencesObj).sort((e1, e2) =>
-     e1[1] == e2[1] ? +e1[0] - +e2[0] : e2[1] - e1[1])
+  const entriesArr:[string, number][] = Object.entries(occurrencesObj).sort(([key1, value1],
+     [key2, value2]) =>
+     value1 == value2 ? +key1 - +key2 : value2 - value1)
   return entriesArr.map(e => `${e[0]} => ${e[1]}`)
 }
 function displayResult(outputRes: string[]) {
