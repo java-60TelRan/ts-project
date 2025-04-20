@@ -1,28 +1,27 @@
-//union
-function kgToGr(kg: number|string) {
-    //Narrowing type
-    if (typeof kg === 'string') {
-      
-        kg = parseFloat(kg);
-    }
-    
-    return kg * 1000;
+type Person = {
+  id: number;
+  age: number;
+  name?: string; // Optional property
 }
-//literals types
-let a:50 | 75| 100 | "abc" ; // a can have only 50, 75 , 100 or "abc" as value
+const people: Person[] = [
+  { id: 1, age: 25 },
+  { id: 2, age: 30 },
+  { id: 3, age: 35 }
+];
+function findPersonById(people: Person[], id: number): Person | undefined {
+  return people.find(person => person.id === id);
+}
+const person = findPersonById(people, 20);
+console.log(person?.name?.length); 
+// function getPersonName(person: Person): string {
+//   return person.name ?? "Vasya"; // Use nullish coalescing operator
+// }
+function getPersonName({name = "Vasya"}:Person): string {
+  return name;
+}
+console.log(getPersonName(people[0])); 
+function speed(speed?: number) {
+  console.log(speed ?? 30);
 
-//intersection types
-type A = {a: string};
-type B = {b: number};
-type C = A & B; // C has both properties a and b
-let obj: C = {a: "hello", b: 42}; // valid
-  type D = string & number; // D is never, as string and number are incompatible types
-
-  type Product = {
-    id: number; 
-    name: string;
-    price: number;
-  }
-  let productKey: keyof Product; // productKey can be "id", "name", or "price"
-  productKey = "id"; // valid
-  //productKey = "kuku";  Error: Type '"kuku"' is not assignable to type '"id" | "name" | "price"'.
+}
+speed(0);
